@@ -10,7 +10,7 @@ setup(
     author_email='petrscherbakov93@gmail.com',
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    url='https://github.com/thealexeydergunov/rush_notificator_sdk',
+    url='https://github.com/petruxa77799/rush_achievements_sdk',
     keywords='rush_achievements_sdk based on aiohttp',
     install_requires=[
         'aiohttp',
