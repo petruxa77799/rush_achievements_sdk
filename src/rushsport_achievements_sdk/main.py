@@ -8,8 +8,8 @@ from .choices import TriggerTypes
 
 
 class AchievementsSDK:
-    def __init__(self, achievements_host: str, aio_session: ClientSession, logger: logging.Logger):
-        self.logger = logger
+    def __init__(self, achievements_host: str, aio_session: ClientSession):
+        self.logger = logging.getLogger(__name__)
         self.host = achievements_host
         self.aio_session = aio_session
         self.queues = Queues(send_achievements=asyncio.Queue())
