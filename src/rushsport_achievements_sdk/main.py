@@ -9,23 +9,23 @@ from .choices import TriggerTypes
 
 class AchievementsSDK:
     def __init__(self, achievements_host: str, aio_session: ClientSession):
-        self.logger = logging.getLogger(__name__)
-        self.host = achievements_host
-        self.aio_session = aio_session
-        self.queues = Queues(send_achievements=asyncio.Queue())
+        self.__logger = logging.getLogger(__name__)
+        self.__host = achievements_host
+        self.__aio_session = aio_session
+        self.__queues = Queues(send_achievements=asyncio.Queue())
         asyncio.create_task(self.__send_achievements_data())
 
     async def __send_achievements_data(self):
         while True:
-            data: dict = await self.queues.send_achievements.get()
+            data: dict = await self.__queues.send_achievements.get()
             try:
-                await self.aio_session.post(f'http://{self.host}/api/achievements/',
-                                            json=data, ssl=False)
+                await self.__aio_session.post(f'http://{self.__host}/api/achievements/',
+                                              json=data, ssl=False)
             except Exception as e:
-                self.logger.exception(f'Problem send_achievements_data. Exception: {e}')
+                self.__logger.exception(f'Problem send_achievements_data. Exception: {e}')
 
     async def send_user_plays_market_achievement(self, user_id: int, team_id: int, event_id: int, value: int = None):
-        await self.queues.send_achievements.put({
+        await self.__queues.send_achievements.put({
             'user_id': user_id,
             'team_id': team_id,
             'event_id': event_id,
