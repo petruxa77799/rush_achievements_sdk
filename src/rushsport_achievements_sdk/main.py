@@ -3,6 +3,7 @@ import asyncio
 import aiohttp
 
 from .dataclasses import Queues
+from .choices import TriggerTypes
 
 
 class AchievementsSDK:
@@ -23,7 +24,12 @@ class AchievementsSDK:
                                             json=data, ssl=False)
             except Exception as e:
                 self.logger.exception(f'Problem send_achievements_data. Exception: {e}')
-                continue
 
-    async def send_achievement(self, achievements_data):
-        await self.queues.send_achievements.put(achievements_data)
+    async def send_user_plays_market_achievement(self, user_id: int, team_id: int, event_id: int, value: int = None):
+        await self.queues.send_achievements.put({
+            'user_id': user_id,
+            'team_id': team_id,
+            'event_id': event_id,
+            'value': value,
+            'trigger_type': TriggerTypes.USER_PLAYS_MARKETS
+        })
