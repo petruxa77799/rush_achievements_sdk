@@ -7,12 +7,10 @@ from .choices import TriggerTypes
 
 
 class AchievementsSDK:
-    def __init__(self, app, logger, db_pool):
+    def __init__(self, achievements_host, aio_session, logger):
         self.logger = logger
-        self.app = app
-        self.host = app.config.ACHIEVEMENT_SERVICE_HOST
-        self.aio_session = aiohttp.ClientSession()
-        self.db_pool = db_pool
+        self.host = achievements_host
+        self.aio_session = aio_session
         self.queues = Queues(send_achievements=asyncio.Queue())
         asyncio.create_task(self.__send_achievements_data())
 
