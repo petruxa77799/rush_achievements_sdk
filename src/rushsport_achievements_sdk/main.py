@@ -8,12 +8,13 @@ from .choices import TriggerTypes
 
 
 class AchievementsSDK:
-    def __init__(self, achievements_host: str, aio_session: ClientSession):
+    def __init__(self, achievements_host: str, aio_session: ClientSession, workers: int):
         self.__logger = logging.getLogger(__name__)
         self.__host = achievements_host
         self.__aio_session = aio_session
         self.__queues = Queues(send_achievements=asyncio.Queue())
-        asyncio.create_task(self.__send_achievements_data())
+        for _ in range(workers):
+            asyncio.create_task(self.__send_achievements_data())
 
     async def __send_achievements_data(self):
         while True:
