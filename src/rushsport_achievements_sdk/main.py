@@ -1,7 +1,5 @@
 import asyncio
 
-import aiohttp
-
 from .dataclasses import Queues
 from .choices import TriggerTypes
 
