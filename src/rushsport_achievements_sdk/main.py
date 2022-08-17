@@ -1,11 +1,14 @@
 import asyncio
+import logging
+
+from aiohttp import ClientSession
 
 from .dataclasses import Queues
 from .choices import TriggerTypes
 
 
 class AchievementsSDK:
-    def __init__(self, achievements_host, aio_session, logger):
+    def __init__(self, achievements_host: str, aio_session: ClientSession, logger: logging.Logger):
         self.logger = logger
         self.host = achievements_host
         self.aio_session = aio_session
