@@ -25,11 +25,22 @@ class AchievementsSDK:
             except Exception as e:
                 self.__logger.exception(f'Problem send_achievements_data. Exception: {e}')
 
-    async def send_user_plays_market_achievement(self, user_id: int, team_id: int, event_id: int, value: int = None):
+    async def __send_achievements(self, user_id: int, team_id: int, event_id: int, value: int,
+                                  trigger_type: TriggerTypes):
         await self.__queues.send_achievements.put({
             'user_id': user_id,
             'team_id': team_id,
             'event_id': event_id,
             'value': value,
-            'trigger_type': TriggerTypes.USER_PLAYS_MARKETS
+            'trigger_type': trigger_type
         })
+
+    async def send_user_plays_market_achievement(self, user_id: int, team_id: int, event_id: int, value: int = None):
+        await self.__send_achievements(
+            user_id=user_id, team_id=team_id, event_id=event_id, value=value,
+            trigger_type=TriggerTypes.USER_PLAYS_MARKETS)
+
+    async def send_user_won_in_a_row_achievement(self, user_id: int, team_id: int, event_id: int, value: int = None):
+        await self.__send_achievements(
+            user_id=user_id, team_id=team_id, event_id=event_id, value=value,
+            trigger_type=TriggerTypes.USER_WON_IN_A_ROW)
