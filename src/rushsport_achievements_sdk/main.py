@@ -39,3 +39,11 @@ class AchievementsSDK:
             'market_id': market_id,
             'trigger_type': TriggerTypes.USER_WON_IN_A_ROW
         })
+
+    async def send_quarter_clock_achievement(self, event_id: int, quarter: int, clock: str):
+        await self.__queues.send_achievements.put({
+            'event_id': event_id,
+            'quarter': quarter,
+            'clock': clock,
+            'trigger_type': TriggerTypes.QUARTER_CLOCK
+        })
