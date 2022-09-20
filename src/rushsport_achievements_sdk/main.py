@@ -58,12 +58,12 @@ class AchievementsSDK:
     async def close(self):
         async def check_shutdown_tasks(tasks: List[asyncio.Task]):
             for task in tasks:
-                if task.done():
-                    self.__tasks.remove(task)
-                    return
-            await asyncio.sleep(1)
-            await check_shutdown_tasks(tasks=tasks)
+                if not task.done():
+                    await asyncio.sleep(2)
+                    await check_shutdown_tasks(tasks=[task])
+            return
 
         for i in range(self.__workers):
             await self.__queues.send_achievements.put(None)
-            await check_shutdown_tasks(tasks=self.__tasks)
+
+        await check_shutdown_tasks(tasks=self.__tasks)
